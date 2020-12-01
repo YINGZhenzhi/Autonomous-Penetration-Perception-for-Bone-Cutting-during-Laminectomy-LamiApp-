@@ -21,4 +21,7 @@ operations like craniotomy or orthognathic.
 
 All the code are available in Matlab.
 
+Please try you own data and make some contribution.
+Contact the author for the example data.
+
 To use LamiApp, please cite https://ieeexplore.ieee.org/document/9224375
