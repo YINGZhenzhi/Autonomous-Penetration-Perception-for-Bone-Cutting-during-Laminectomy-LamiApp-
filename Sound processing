@@ -1,0 +1,42 @@
+
+[y,fs]=audioread('D:\ .m4a');
+n=length(y)  %选取变换的点数 
+y_p=fft(y,n);      %对n点进行傅里叶变换到频域
+f=fs*(0:n/2-1)/n;   % 对应点的频率
+
+figure(5)
+subplot(2,1,1);
+plot(y);                    %语音信号的时域波形图
+title('原始语音信号采样后时域波形');
+xlabel('时间轴')
+ylabel('幅值 A')
+
+subplot(2,1,2);
+plot(f,abs(y_p(1:n/2)));     %语音信号的频谱图
+title('原始语音信号采样后频谱图');
+xlabel('频率Hz');
+ylabel('频率幅值');
+
+
+%%对音频信号产生噪声
+  
+L=length(y)        %计算音频信号的长度
+  
+noise=0.1*randn(L,2);  %产生等长度的随机噪声信号(这里的噪声的大小取决于随机函数的幅度倍数）
+  
+y_z=y+noise;        %将两个信号叠加成一个新的信号——加噪声处理   
+  
+
+
+%对加噪后的语音信号进行分析
+n=length(y);  %选取变换的点数 
+
+y_zp=fft(y_z,n);      %对n点进行傅里叶变换到频域
+
+f=fs*(0:n/2-1)/n;   % 对应点的频率
+
+figure(2)
+
+subplot(2,1,1);
+
+plot(y_z);                    
