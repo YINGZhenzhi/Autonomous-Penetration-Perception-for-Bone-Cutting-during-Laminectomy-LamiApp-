@@ -21,6 +21,10 @@ operations like craniotomy or orthognathic.
 
 All the code are available in Matlab.
 
+The force signals are obtain by Kistler force sensor and transported by an oscilloscope.
+The sound signals are obtained by a microphone.
+The surgical tool is Primado 2, serial communication rs232.
+
 Please try you own data and make some contribution.
 Contact the author for the example data.
 
