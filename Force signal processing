@@ -1,0 +1,134 @@
+%%从excel导入zxy1
+
+n2=1:length(zxy2)
+figure(3)
+plot(n3,zxy3)
+
+subplot(2,2,1)                                       %画多个图
+plot(n1,zxy1)
+subplot(2,2,2)
+plot(n2,zxy2)
+subplot(2,2,3)                                       %画多个图
+plot(n3,zxy3)
+subplot(2,2,4)
+plot(n4,zxy4)
+
+zxy1mean=ones(180,3)              %生成平均值矩阵
+
+tool1=ones(1000,3)                  %工具人1号
+
+%%生成带宽
+for i=1:9000;
+j=(i-1)*20;
+tool1=zxy1(j+1:i*20,:);
+max1=max(tool1);
+min1=min(tool1);
+zxy1band(i,:)=max1-min1;
+end
+
+%%带宽平均值
+for i=1:90
+j=(i-1)*100
+tool1=zxy1band(j+1:i*100,:);
+mean1=mean(tool1,1);
+zxy1mean(i,:)=mean1;
+end
+zxy1minus=zxy1mean(11:90,:)
+
+%%带宽除前面10个的平均值
+for i=11:90
+tool2=zxy1mean(i-10:i-1,:);
+mean2=mean(tool2);
+tool3=zxy1mean(i,:);
+div1=tool3./mean2;
+zxy1div(i-10,:)=div1;
+end
+
+%%合并
+zxy1com=[zxy1minus,zxy1div]
+
+%%得到带宽平均值
+zxy1minus=abs(zxy1(2:180000,:)-zxy1(1:179999,:))
+zxy1minus(180000,:)=[0 0 0]
+for i=1:180
+j=(i-1)*1000
+tool1=zxy1minus(j+1:i*1000,:)
+zxy1mean(i,:)=mean(tool1,1)
+end
+
+zxy1plus=sqrt(sum(zxy1.*zxy1,2))        %求合力和平均值
+for i=1:180
+j=(i-1)*1000
+tool2=zxy1plus(j+1:i*1000,:)
+zxy1pmean(i,:)=mean(tool2,1)
+end
+
+subplot(2,1,1)                                       %画多个图
+plot(zxy1pmean)
+subplot(2,1,2)
+plot(zxy1plus)
+
+
+%%生成带宽
+
+band=ones(10000,3);                                                 %改band后面编号
+forcemean=ones(100,3);                                        %改force后面编号
+
+for i=1:10000;                                                   %改信号个数
+j=(i-1)*20;
+tool1=force(j+1:i*20,:);                                      %改force后面编号
+max1=max(tool1);
+min1=min(tool1);
+band(i,:)=max1-min1;                                       %改band后面编号
+end
+%%带宽的叠加平均值
+------------------------
+tool=band(1:100,:);                                            
+mean1=mean(tool,1);
+forcemean(1,:)=mean1;
+for i=2:100
+j=(i-1)*100;
+tool=band(j+1:i*100,:);
+mean1=mean(tool,1);
+forcemean(i,:)=forcemean(i-1,:)*0.5+mean1*0.5;    %%找前面一个
+end
+-----------------------
+tool=band(1:100,:);                                               %改band后面编号  %%前四个，后面都是平均5个
+mean1=mean(tool,1);
+forcemean(1,:)=mean1;                                        %改force后面编号
+tool=band(101:200,:);                                           %改band后面编号
+mean1=mean(tool,1);
+forcemean(2,:)=mean1*0.5+forcemean(1,:);         %改force后面编号
+tool=band(201:300,:);                                            %改band后面编号
+mean1=mean(tool,1);
+forcemean(3,:)=mean1/3+forcemean(1,:)/3+forcemean(2,:)/3;         %改force后面编号
+tool=band(301:400,:);                                          %改band后面编号
+mean1=mean(tool,1);
+forcemean(4,:)=mean1/4+forcemean(1,:)/4+forcemean(2,:)/4+forcemean(3,:)/4;                  %改force后面编号
+for i=5:100
+j=(i-1)*100;
+tool=band(j+1:i*100,:);                                           %改band后面编号
+mean1=mean(tool,1);
+forcemean(i,:)=forcemean(i-1,:)/5+mean1/5+forcemean(i-2,:)/5+forcemean(i-3,:)/5+forcemean(i-4,:)/5;   %%找前面两个 %改force后面编号
+end
+figure(5);
+plot(forcemean)                                                   %改force后面编号
+
+
+%%带宽的差
+forcediff=zeros(100,3);                                          %改diff后面编号
+for i=6:100
+tool3=forcemean(i-5:i-1,:);                                      %改mean后面编号
+mean2=mean(tool3,1);
+forcediff(i,:)=forcemean(i,:)-mean2;                         %改diff mean后面编号
+end
+figure(6);
+plot(forcediff)                                                        %改diff后面编号
+
+%%转置
+Tforcediff4=forcediff4';
+Tforcemean1=forcemean1';
+
+归一化
+[Nforcediff1,PS1]=mapminmax(Tforcediff1,0,1);
+[Nforcemean1,PS101]=mapminmax(Tforcemean1,0,1);
