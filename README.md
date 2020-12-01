@@ -1,4 +1,4 @@
-# Autonomous-Penetration-Perception-for-Bone-Cutting-during-Laminectomy-LamiApp-
+# Autonomous-Penetration-Perception-for-Bone-Cutting-during-Laminectomy-LamiApp
 
 In spinal surgery, the surgeon needs superb skills 
 to  determine  the  extent  of  penetration  of  cutting  tool  for 
