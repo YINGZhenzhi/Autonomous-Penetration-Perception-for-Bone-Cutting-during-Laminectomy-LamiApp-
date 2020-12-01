@@ -1,0 +1,22 @@
+F=ones(90,3);                                                        %%F后面加实验编号，信号长度改
+F(1,:)=21;
+F(90,:)=21;
+for i=2:89                                                              %%i长度也改              
+toolz=force1((i-1)*2000-999:i*2000+1000,1);          %%force后面也加实验编号
+toolx=force1((i-1)*2000-999:i*2000+1000,2);
+tooly=force1((i-1)*2000-999:i*2000+1000,3);
+Tz=fft(toolz);
+Tx=fft(toolx);
+Ty=fft(tooly);
+Tzsmall=Tz(180:220);
+Txsmall=Tx(180:220);
+Tysmall=Ty(180:220);
+tzsmall=abs(Tzsmall);
+txsmall=abs(Txsmall);
+tysmall=abs(Tysmall);
+F(i,1)=find(tzsmall==max(max(tzsmall)));                 %%F后面加实验编号
+F(i,2)=find(txsmall==max(max(txsmall)));
+F(i,3)=find(tysmall==max(max(tysmall)));
+end
+F=(F-1)*5+900;
+Fmean=mean(F);
