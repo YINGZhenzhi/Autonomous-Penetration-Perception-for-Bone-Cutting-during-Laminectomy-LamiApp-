@@ -1,0 +1,62 @@
+[Nforcediff1,PS1]=mapminmax(Tforcediff1,0,1);
+[Nforcediff2,PS2]=mapminmax(Tforcediff2,0,1);
+[Nforcediff3,PS3]=mapminmax(Tforcediff3,0,1);
+[Nforcediff4,PS4]=mapminmax(Tforcediff4,0,1);
+[Nforcemean1,PS101]=mapminmax(Tforcemean1,0,1);
+[Nforcemean2,PS102]=mapminmax(Tforcemean2,0,1);
+[Nforcemean3,PS103]=mapminmax(Tforcemean3,0,1);
+[Nforcemean4,PS104]=mapminmax(Tforcemean4,0,1);
+
+P_train = [];
+T_train = [];
+P_test = [];
+T_test = [];
+
+features=[];
+classes=[];
+
+temp_input = features';
+temp_output = classes';
+n = randperm(350);
+P_train = [P_train temp_input(n(1:300),:)'];       %%训练集——样本
+T_train = [T_train temp_output(n(1:300),:)'];
+P_test = [P_test temp_input(n(301:350),:)'];       %%测试集——样本
+T_test = [T_test temp_output(n(301:350),:)'];
+
+result_grnn = [];
+result_pnn = [];
+time_grnn = [];
+time_pnn = [];
+
+p_train = P_train(1:6,:);
+p_test = P_test(1:6,:)；
+
+%%
+        % GRNN创建及仿真测试
+        t = cputime;
+        % 创建网络
+        net_grnn = newgrnn(p_train,T_train);
+        % 仿真测试
+        t_sim_grnn = sim(net_grnn,p_test);
+        T_sim_grnn = round(t_sim_grnn);
+        t = cputime - t;
+        time_grnn = [time_grnn t];
+        result_grnn = [result_grnn T_sim_grnn'];
+
+accuracy_grnn = [];
+accuracy_1 = length(find(result_grnn(:,1) == T_test'))/length(T_test);
+
+figure(1)
+plot(1:50,T_test,'bo',1:50,result_grnn(:,1),'r-*')
+grid on
+xlabel('测试集样本编号')
+ylabel('测试集样本类别')
+legend('真实值','GRNN预测值','PNN预测值')
+
+for i = 1:10
+    accuracy_1 = length(find(result_grnn(:,1) == T_test'))/length(T_test);
+    accuracy_grnn = [accuracy_grnn accuracy_1];
+end
+
+string = {'测试集预测结果(GRNN)';['正确率：' num2str(accuracy_grnn(1)*100) '%(GRNN) ']}
+title(string)
