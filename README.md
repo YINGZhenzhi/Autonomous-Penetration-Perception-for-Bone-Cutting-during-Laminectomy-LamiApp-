@@ -18,3 +18,7 @@ system reaches up to 95%. The actuation of cutting tool can be
 automatically stopped as the penetration happens. In addition, 
 the proposed system can also be applied to other bone cutting
 operations like craniotomy or orthognathic.
+
+All the code are available in Matlab.
+
+To use LamiApp, please cite https://ieeexplore.ieee.org/document/9224375
